@@ -80,8 +80,10 @@ def download(config, log2file=True, verbose=False, print_config_only=False,
 
     # short check (this should just raise, so execute this before configuring loggers):
     isfile = isinstance(config, str) and os.path.isfile(config)
+    print('isfile: ', isfile)
+    print('log2file: ', log2file)
     if not isfile and log2file is True:
-        raise ValueError('`log2file` can be True only if `config` is a '
+       raise ValueError('`log2file` can be True only if `config` is a '
                          'string denoting an existing file')
 
     # Validate params converting them in dict of args for the download function. Also in

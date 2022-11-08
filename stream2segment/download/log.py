@@ -52,6 +52,7 @@ def configlog4download(logger, logfile_path='', verbose=False):
     db_streamer, sysout_streamer = None, None
 
     if logfile_path:
+        print(f'LOGFILE: {logfile_path}')
         db_streamer = DbStreamHandler(logfile_path)
         logger.addHandler(db_streamer)
 
@@ -98,7 +99,7 @@ class DbStreamHandler(logging.FileHandler):
         # w+: allows to read without closing first:
         super(DbStreamHandler, self).__init__(filepath, mode='w+')
         # access the stream with self.stream
-        self.errors = 0
+        self.errors = 1
         self.warnings = 0
         self.criticals = 0  # one should be enough
         # configure level and formatter

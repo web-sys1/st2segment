@@ -47,7 +47,8 @@ def logfilepath(filepath):
         file does not need to exist but if you want to use the returned file
         for logging (the usual case), its parent directory must exist
     """
-    _now = datetime.utcnow().replace(microsecond=0).isoformat()
+    _now = datetime.now().strftime('%m%d-%H%M%S')
+    print('Now ', type(_now))
     return filepath + (".%s.log" % _now)
 
 

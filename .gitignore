@@ -68,3 +68,4 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+tests/data/GE.FLT1..HH\?.mseed

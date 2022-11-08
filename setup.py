@@ -88,12 +88,12 @@ setup(
     # List run-time dependencies here.  These will be installed by pip when
     # your project is installed. For info see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['PyYAML>=3.12',
-                      'numpy>=1.13.1',
+    install_requires=['PyYAML>=6.0',
+                      'numpy>=1.22.3',
                       'tables>=3.5.2',
                       'pandas>=0.20.3',
-                      'obspy>=1.0.3',
-                      'Flask>=0.12.3',
+                      'obspy>=1.3.0',
+                      'Flask>=2.0.3',
                       'psycopg2>=2.7.3.1',
                       'psutil>=5.3.1',
                       'SQLAlchemy>=1.1.14,<1.4',

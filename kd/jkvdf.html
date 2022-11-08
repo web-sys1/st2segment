@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DStats</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+	<style>
+		body, html{font-family: 'Montserrat', "Lucida Sans Unicode", Arial, Helvetica, sans-serif !important;}
+	</style>
+
+    
+	
+	
+	
+	
+	
+	<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+	
+	
+	
+	<script src="https://unpkg.com/esri-leaflet@2.1.4"></script>
+	
+
+	<script type='text/javascript'>
+		GLOBALS={
+			sta_data:["ILL11",[1,46.31,7.63,3,0,1,[4,6]],"CERN1",[2,46.24,6.05,3,1,1,[0,6]],"CERN5",[3,46.31,6.08,3,1,1,[0,6]],"CERNS",[4,46.27,6.07,3,1,1,[0,6]],"ACB",[5,47.59,8.25,3,2,1,[0,6]],"AIGLE",[6,46.34,6.95,3,2,1,[0,6]],"BALST",[7,47.34,7.69,3,2,1,[0,6]],"BAULM",[8,46.79,6.47,3,2,1,[0,6]],"BERGE",[9,47.87,8.18,3,2,1,[0,6]],"BERNI",[10,46.41,10.02,3,2,1,[0,6]],"BNALP",[11,46.87,8.42,3,2,1,[0,6]],"BOURR",[12,47.39,7.23,3,2,1,[0,6]],"BRANT",[13,46.94,6.47,3,2,1,[0,6]],"CHAMB",[14,46.78,6.61,3,2,1,[0,6]],"CHASS",[15,47.16,7.12,3,2,1,[0,6]],"COLLE",[16,46.29,6.12,3,2,1,[0,6]],"DAGMA",[17,47.23,8.01,3,2,1,[0,6]],"DAVOX",[18,46.78,9.88,3,2,1,[0,6]],"DIX",[19,46.08,7.41,3,2,1,[0,6]],"EMBD",[20,46.22,7.83,3,2,1,[0,6]],"EMING",[21,47.9,8.85,3,2,1,[0,6]],"EMMET",[22,47.44,8.01,3,2,1,[0,6]],"FIESA",[23,46.44,8.11,3,2,1,[0,6]],"FULLY",[24,46.16,7.14,3,2,1,[0,6]],"FUORN",[25,46.62,10.26,3,2,1,[0,6]],"FUSIO",[26,46.45,8.66,3,2,1,[0,6]],"GIMEL",[27,46.53,6.27,3,2,1,[0,6]],"GRIMS",[28,46.58,8.32,3,2,1,[0,6]],"GRYON",[29,46.25,7.11,3,2,1,[0,6]],"HASLI",[30,46.76,8.15,3,2,1,[0,6]],"HAUIG",[31,47.66,7.7,3,2,1,[0,6]],"ILLEZ",[32,46.22,6.94,3,2,1,[0,6]],"JAUN",[33,46.63,7.29,3,2,1,[0,6]],"LADOL",[34,46.43,6.13,3,2,1,[0,6]],"LAUCH",[35,46.42,7.77,3,2,1,[0,6]],"LIENZ",[36,47.29,9.49,3,2,1,[0,6]],"LKBD2",[37,46.37,7.64,3,2,1,[0,6]],"LLS",[38,46.85,9.01,3,2,1,[0,6]],"MESRY",[39,46.35,6.31,3,2,1,[0,6]],"METMA",[40,47.71,8.25,3,2,1,[0,6]],"MFERR",[41,45.95,7.11,3,2,1,[0,6]],"MMK",[42,46.05,7.96,3,2,1,[0,6]],"MTI02",[43,47.38,7.17,3,2,1,[0,6]],"MUGIO",[44,45.92,9.04,3,2,1,[0,6]],"MUO",[45,46.97,8.64,3,2,1,[0,6]],"MUTEZ",[46,47.51,7.65,3,2,1,[0,6]],"NALPS",[47,46.6,8.75,3,2,1,[0,6]],"PANIX",[48,46.83,9.11,3,2,1,[0,6]],"PERON",[49,46.19,5.91,3,2,1,[0,6]],"PLONS",[50,47.05,9.38,3,2,1,[0,6]],"ROMAN",[51,47.56,9.34,3,2,1,[0,6]],"ROTHE",[52,47.48,7.92,3,2,1,[0,6]],"SAIRA",[53,47.3,7.09,3,2,1,[0,6]],"SALAN",[54,46.14,6.97,3,2,1,[0,6]],"SALEV",[55,46.06,6.1,3,2,1,[0,3]],"SAVIG",[56,46.07,5.97,3,2,1,[0,3]],"SENIN",[57,46.36,7.3,3,2,1,[0,6]],"SIMPL",[58,46.24,8.02,3,2,1,[4,3,0,3]],"SLE",[59,47.76,8.49,3,2,1,[0,6]],"STEIN",[60,47.67,8.87,3,2,1,[0,3]],"SULZ",[61,47.53,8.11,3,2,1,[0,6]],"TORNY",[62,46.77,6.96,3,2,1,[0,6]],"TRULL",[63,47.65,8.68,3,2,1,[0,6]],"VANNI",[64,46.21,7.6,3,2,1,[0,6]],"VDL",[65,46.48,9.45,3,2,1,[0,6]],"VDR",[66,46.21,9.17,3,2,1,[0,6]],"VINZL",[67,46.45,6.28,3,2,1,[0,6]],"VMV",[68,46.42,9.02,3,2,1,[0,6]],"WALHA",[69,47.75,9.12,3,2,1,[0,6]],"WEIN2",[70,47.53,8.99,3,2,1,[0,6]],"WGT",[71,47.1,8.93,3,2,1,[0,6]],"WILA",[72,47.41,8.91,3,2,1,[0,6]],"WIMIS",[73,46.66,7.62,3,2,1,[0,6]],"WOLEN",[74,47.0,7.37,3,2,1,[0,6]],"ZUR",[75,47.37,8.58,3,2,1,[0,6]],"A060B",[99,46.99,7.98,3,3,1,[0,6]],"A062A",[100,46.18,9.11,3,3,1,[4,6]],"A288A",[101,46.01,8.48,3,3,1,[4,6]],"AIGB",[102,44.79,6.88,4,4,1,[3,3]],"AIGH",[103,44.79,6.88,4,4,1,[3,3]],"GRA",[104,45.47,5.97,4,4,1,[0,3]],"CI18",[139,45.9,6.77,4,5,1,[4,3,0,3]],"CI19",[140,45.94,6.9,4,5,1,[0,6]],"CI20",[141,45.82,6.96,4,5,1,[0,6]],"BETS",[158,48.89,7.92,4,6,1,[4,12]],"ILLK",[159,48.52,7.72,4,6,1,[4,12]],"OPS",[160,48.92,7.88,4,6,1,[4,12]],"OGMO",[167,45.21,6.68,4,7,1,[0,6]],"BETHI",[180,49.24,5.23,4,7,1,[0,6]],"BOUC",[184,47.25,6.26,4,7,1,[0,6]],"CHLF",[199,46.56,3.84,4,7,1,[0,3]],"CHMF",[200,47.25,6.65,4,7,1,[0,6]],"CIEL",[201,48.83,7.36,4,7,1,[4,3,0,9]],"FAHY",[220,47.51,5.46,4,7,1,[0,6]],"FOURG",[224,47.1,5.81,4,7,1,[0,6]],"GRN",[231,45.24,5.74,4,7,1,[0,6]],"OG35",[234,46.04,5.57,4,7,1,[0,6]],"HOHE",[238,48.66,7.48,4,7,1,[4,3,0,9]],"ILLF",[241,47.68,7.25,4,7,1,[4,3,0,9]],"LEMB",[251,49.03,7.76,4,7,1,[4,3,0,9]],"MANO",[258,48.83,5.92,4,7,1,[0,6]],"MOLES",[265,47.93,4.39,4,7,1,[0,3]],"NEEW",[273,48.96,8.1,4,7,1,[4,3,0,9]],"NEUF",[275,49.32,6.03,4,7,1,[0,6]],"OG02",[279,46.15,6.22,4,7,1,[0,9,1,3]],"OGAG",[281,44.79,6.54,4,7,1,[0,6]],"OGCY",[286,45.47,6.71,4,7,1,[0,3]],"OGGL",[289,45.88,4.61,4,7,1,[0,3]],"OGJA",[290,44.91,6.71,4,7,1,[0,3]],"OGMY",[293,45.88,5.89,4,7,1,[0,3]],"OGRV",[294,46.35,4.75,4,7,1,[0,3]],"OGS1",[295,45.06,5.8,4,7,1,[0,6]],"OGS2",[296,45.06,5.8,4,7,1,[1,3,0,3]],"OGS3",[298,45.07,5.81,4,7,1,[0,6]],"OGSA",[300,45.04,6.4,4,7,1,[0,6]],"OGSI",[302,46.06,6.76,4,7,1,[0,9,1,3]],"OGSM",[304,45.61,5.7,4,7,1,[0,6]],"OGVA",[306,46.33,6.68,4,7,1,[0,6]],"PLYF",[316,46.96,4.74,4,7,1,[0,3]],"RIVEL",[327,46.76,5.92,4,7,1,[0,6]],"RONF",[328,47.71,6.65,4,7,1,[0,6]],"RSL",[330,45.69,6.62,4,7,1,[0,6]],"STR",[354,48.58,7.76,4,7,1,[0,12]],"SZBH",[359,48.93,7.86,4,7,1,[0,9,4,3]],"VILS",[374,49.12,4.09,4,7,1,[0,3]],"VOEL",[375,48.97,7.12,4,7,1,[4,3,0,9]],"WALT",[377,47.97,7.28,4,7,1,[4,3,0,9]],"WLS",[379,48.41,7.35,4,7,1,[0,6]],"XAFF",[380,48.41,6.62,4,7,1,[0,3,3,3]],"ZELS",[382,48.3,7.63,4,7,1,[4,3,0,9]],"AVM",[416,44.94,5.68,4,8,1,[0,3]],"AVR",[418,44.96,5.65,4,8,1,[0,3]],"CABF",[472,46.61,6.09,4,9,1,[4,6]],"ECH",[480,48.22,7.16,4,9,1,[0,3,3,3]],"OGAN",[518,45.89,6.14,4,9,1,[0,3]],"OGAP",[519,45.9,6.13,4,9,1,[0,3]],"OGBA",[520,45.64,5.88,4,9,1,[0,3]],"OGBC",[522,45.59,5.93,4,9,1,[0,3]],"OGCU",[524,45.2,5.78,4,9,1,[0,3]],"OGDH",[525,45.18,5.74,4,9,1,[0,3]],"OGEP",[526,45.94,6.09,4,9,1,[0,3]],"OGFO",[527,45.21,5.82,4,9,1,[0,3]],"OGH1",[528,45.19,5.74,4,9,1,[0,3]],"OGH2",[529,45.19,5.74,4,9,1,[0,3]],"OGH3",[530,45.19,5.74,4,9,1,[0,3]],"OGH4",[531,45.19,5.74,4,9,1,[0,3]],"OGH5",[532,45.19,5.74,4,9,1,[0,3]],"OGH6",[533,45.19,5.74,4,9,1,[0,3]],"OGH7",[534,45.19,5.74,4,9,1,[0,3]],"OGIM",[535,45.24,5.82,4,9,1,[0,3]],"OGLE",[536,45.53,6.47,4,9,1,[0,3]],"OGME",[538,45.92,6.1,4,9,1,[0,3]],"OGMU",[539,45.2,5.73,4,9,1,[0,3]],"OGPC",[540,45.14,5.7,4,9,1,[0,3]],"OGPO",[541,45.92,6.06,4,9,1,[0,3]],"OGPS",[542,45.2,5.7,4,9,1,[0,3]],"OGSR",[543,45.19,5.74,4,9,1,[0,3]],"STBO",[576,47.86,7.26,4,9,1,[0,3,3,3]],"STBR",[577,47.73,7.32,4,9,1,[0,3,3,3]],"STBU",[578,47.88,6.85,4,9,1,[0,3,3,3]],"STDM",[579,48.0,6.64,4,9,1,[0,3,3,3]],"STFL",[580,47.11,6.56,4,9,1,[4,3,0,3]],"STHE",[581,47.58,7.54,4,9,1,[4,3,0,3]],"STMU",[582,48.58,7.77,4,9,1,[4,3,0,3]],"STR",[583,48.58,7.76,4,9,1,[4,3,0,3]],"STRB",[584,47.72,7.34,4,9,1,[0,3,3,3]],"STRO",[585,49.08,7.03,4,9,1,[0,3,3,3]],"STSF",[586,48.83,7.96,4,9,1,[4,3,0,3]],"STUF",[587,47.65,7.44,4,9,1,[0,3,3,3]],"ETNF",[596,48.26,6.04,4,10,1,[0,6]],"SAVF",[597,48.62,5.12,4,10,1,[0,6]],"ALFT",[665,48.14,11.28,7,11,1,[2,3,0,3]],"BE1",[666,47.91,11.22,7,11,1,[0,6]],"BGDS",[667,47.64,13.03,7,11,1,[0,3]],"BHG",[668,47.72,12.88,7,11,1,[0,3]],"BIB",[669,48.15,11.25,7,11,1,[0,6]],"DRMY1",[670,48.16,11.28,7,11,1,[4,6]],"DRMY2",[671,48.16,11.28,7,11,1,[4,6]],"DRMY3",[672,48.16,11.28,7,11,1,[4,6]],"DRMY4",[673,48.16,11.28,7,11,1,[4,6]],"DRMY5",[674,48.16,11.28,7,11,1,[4,6]],"DRMY6",[675,48.16,11.28,7,11,1,[4,6]],"DRMY7",[676,48.17,11.28,7,11,1,[4,8]],"DROMY",[677,48.16,11.28,7,11,1,[4,6]],"FFB1",[678,48.16,11.28,7,11,1,[0,6]],"FFB2",[679,48.16,11.27,7,11,1,[0,6]],"FFB3",[680,48.16,11.28,7,11,1,[0,6]],"GELB",[681,48.16,11.25,7,11,1,[0,6]],"GRMB",[682,48.14,11.26,7,11,1,[2,1,0,5]],"HROE",[683,50.54,10.16,7,11,1,[0,3]],"KW1",[684,48.12,12.6,7,11,1,[0,3]],"MANZ",[685,49.99,12.11,7,11,1,[0,3]],"MGBB",[686,49.97,12.21,7,11,1,[0,6]],"MGS01",[687,48.07,11.51,7,11,1,[0,6]],"MGS02",[688,48.08,11.59,7,11,1,[0,6]],"MGS03",[689,48.07,11.71,7,11,1,[0,6]],"MGS04",[690,47.98,11.72,7,11,1,[0,6]],"MGS05",[691,48.0,11.52,7,11,1,[0,6]],"MGSBH",[692,48.03,11.64,7,11,1,[0,6]],"MKON",[693,50.02,12.23,7,11,1,[0,6]],"MROB",[694,50.08,12.18,7,11,1,[0,6]],"MZEK",[695,49.96,11.95,7,11,1,[0,3]],"OBER",[696,47.41,10.29,7,11,1,[0,6]],"PART",[697,47.5,11.11,7,11,1,[0,6]],"RJOB",[698,47.74,12.8,7,11,1,[0,3]],"RMOA",[699,47.76,12.86,7,11,1,[0,3]],"RNHA",[700,47.81,12.82,7,11,1,[0,3]],"RNON",[701,47.74,12.87,7,11,1,[0,3]],"ROTZ",[702,49.77,12.21,7,11,1,[0,3]],"RTBE",[703,47.75,12.82,7,11,1,[0,3]],"RTSA",[704,47.77,12.84,7,11,1,[0,3]],"RTSH",[705,47.75,12.85,7,11,1,[0,3]],"SCE",[706,47.04,11.71,7,11,1,[0,6]],"SYBAD",[707,48.12,11.57,7,11,1,[4,6]],"TON",[708,48.17,11.29,7,11,1,[0,6]],"UH3",[709,48.03,11.64,7,11,1,[0,6]],"WETR",[710,49.15,12.88,7,11,1,[0,3]],"ZUGS",[711,47.42,10.98,7,11,1,[0,6]],"A037A",[712,47.07,10.26,7,3,1,[4,3,0,3]],"A110A",[713,49.78,8.73,7,3,1,[4,3,3,3]],"A126A",[714,48.99,8.49,7,3,1,[3,6]],"A127A",[715,49.2,7.98,7,3,1,[3,6]],"A129A",[716,49.34,7.74,7,3,1,[3,6]],"A015A",[717,48.93,14.99,7,12,1,[5,3]],"A031A",[726,48.43,13.5,7,12,1,[5,3]],"A032A",[727,48.12,13.31,7,12,1,[5,3]],"A033A",[728,47.48,13.13,7,12,1,[5,3]],"A035B",[730,47.16,12.64,7,12,1,[4,3]],"A036A",[731,47.38,12.31,7,12,1,[4,3]],"A104C",[732,48.13,9.66,7,12,1,[5,6]],"A141A",[733,47.75,11.85,7,12,1,[5,6]],"A143A",[734,47.68,11.0,7,12,1,[4,3,5,3]],"A145A",[735,47.87,12.39,7,12,1,[5,3]],"A146A",[736,48.29,12.97,7,12,1,[4,3]],"A148B",[737,48.51,12.48,7,12,1,[5,3]],"A365A",[749,48.17,10.73,7,12,1,[3,3,5,3]],"A367A",[750,48.31,11.92,7,12,1,[5,3]],"PL23A",[790,50.23,20.32,7,12,1,[4,3]],"PL24A",[791,49.72,19.0,7,12,1,[5,3]],"PL25A",[792,49.92,19.53,7,12,1,[5,3]],"PL26A",[793,50.19,19.17,7,12,1,[5,3]],"PL27A",[794,49.9,18.71,7,12,1,[5,3]],"PL28A",[795,50.2,18.77,7,12,1,[5,3]],"PL30A",[796,50.14,17.69,7,12,1,[5,3]],"SK01A",[797,49.47,18.8,7,12,1,[5,3]],"SK02A",[798,49.45,19.3,7,12,1,[4,3]],"SK03A",[799,49.17,18.86,7,12,1,[4,3]],"BHB",[846,44.84,7.26,6,13,1,[0,6]],"BLANC",[848,45.84,6.93,6,13,1,[4,3,3,3]],"CIRO",[852,45.6,7.57,6,13,1,[0,6]],"LSD",[861,45.46,7.13,6,13,1,[0,3]],"REMY",[868,45.84,7.16,6,13,1,[0,6,4,6]],"ROTM",[873,44.85,8.35,6,13,1,[0,3]],"RRL",[874,44.92,6.79,6,13,1,[0,3]],"RSP",[875,45.15,7.26,6,13,1,[0,6]],"SATI",[876,45.88,7.87,6,13,1,[0,12]],"TRAV",[879,45.51,7.75,6,13,1,[0,3,3,3]],"BAG8",[907,45.82,10.47,6,14,1,[0,6]],"BRMO",[919,46.48,10.37,6,14,1,[0,6]],"CADC",[928,45.46,10.13,6,14,1,[0,6]],"CAPR",[934,45.64,9.93,6,14,1,[0,6]],"CNCS",[962,45.61,10.22,6,14,1,[0,6]],"CTI",[985,46.05,11.65,6,14,1,[0,3]],"CTL8",[986,45.28,9.76,6,14,1,[0,3]],"EUCT",[1020,45.2,9.13,6,14,1,[0,3]],"MABI",[1099,46.05,10.51,6,14,1,[0,6]],"MAGA",[1100,45.78,10.63,6,14,1,[0,12]],"MBAL",[1103,45.7,10.86,6,14,1,[0,6]],"MDI",[1114,45.77,9.72,6,14,1,[0,12]],"MERA",[1118,45.71,9.43,6,14,1,[0,6]],"MILN",[1126,45.48,9.23,6,14,1,[0,12]],"MONC",[1139,45.07,7.93,6,14,1,[0,3]],"MRGE",[1146,45.77,7.06,6,14,1,[0,6]],"ORZI",[1178,45.41,9.93,6,14,1,[0,12]],"SALO",[1227,45.62,10.52,6,14,1,[4,6,0,6]],"SARZ",[1229,44.87,8.91,6,14,1,[0,6]],"SGAL",[1242,45.56,10.31,6,14,1,[0,6]],"VARE",[1277,45.87,8.77,6,14,1,[0,6]],"VOBA",[1288,45.64,10.5,6,14,1,[0,6]],"ZEN8",[1295,45.64,10.73,6,14,1,[0,3]],"BNI",[1340,45.05,6.68,6,15,1,[0,6]],"DPC",[1346,50.35,16.32,6,15,1,[0,3]],"TUE",[1358,46.47,9.35,6,15,1,[3,12]],"AGOR",[1373,46.23,12.05,6,16,1,[0,6]],"BALD",[1375,45.68,10.82,6,16,1,[0,6]],"ABSI",[1390,46.73,11.32,6,17,1,[0,6]],"BOSI",[1391,46.5,11.32,6,17,1,[4,6]],"KOSI",[1392,46.46,11.38,6,17,1,[0,6]],"LUSI",[1393,45.96,10.94,6,17,1,[0,6]],"MOSI",[1394,46.62,10.55,6,17,1,[0,6]],"ROSI",[1395,46.93,11.41,6,17,1,[0,6]],"CARE",[1396,46.43,10.69,6,18,1,[0,6]],"DOSS",[1397,45.88,11.19,6,18,1,[0,6]],"GAGG",[1399,46.08,10.96,6,18,1,[0,12]],"OZOL",[1401,46.4,11.05,6,18,1,[0,6]],"PANI",[1402,46.05,11.33,6,18,1,[0,3]],"RONC",[1403,45.98,10.62,6,18,1,[0,6]],"VARA",[1404,45.83,10.9,6,18,1,[0,6]],"ZIAN",[1405,46.28,11.56,6,18,1,[0,3]],"PDN3",[1425,45.81,10.74,6,19,1,[0,6]],"PDN6",[1428,45.64,10.55,6,19,1,[4,6]],"RCHB",[1479,50.16,5.23,1,20,1,[0,3]],"ABTA",[2163,46.75,12.51,1,21,1,[4,3,0,3]],"DAVA",[2170,47.29,9.88,1,21,1,[0,6]],"FETA",[2171,47.02,10.73,1,21,1,[4,6,0,6]],"JAVC",[2172,48.86,17.67,1,21,1,[3,3]],"LESA",[2175,47.42,12.68,1,21,1,[4,3,0,3]],"MOTA",[2178,47.34,11.1,1,21,1,[4,6,0,6]],"RETA",[2180,47.49,10.76,1,21,1,[4,6,0,6]],"SQTA",[2184,47.22,11.21,1,21,1,[4,6,0,6]],"UNNA",[2185,48.66,16.35,1,21,1,[3,3]],"WATA",[2187,47.34,11.58,1,21,1,[4,6,0,6]],"WTTA",[2189,47.26,11.64,1,21,1,[4,6,0,6]],"A001A",[2260,48.73,16.59,1,3,1,[3,3]],"A006A",[2265,48.74,16.02,1,3,1,[3,3]],"A007A",[2266,48.72,15.53,1,3,1,[3,3]],"A071A",[2280,49.74,12.69,1,3,1,[4,3,3,3]],"A074B",[2281,49.67,13.53,1,3,1,[3,3]],"A076A",[2282,49.62,14.15,1,3,1,[3,3]],"A077A",[2283,49.27,14.07,1,3,1,[3,3]],"A078A",[2284,48.86,14.28,1,3,1,[3,3]],"A079A",[2285,49.23,14.71,1,3,1,[3,3]],"A080A",[2286,49.68,14.93,1,3,1,[3,3]],"A081A",[2287,50.08,15.03,1,3,1,[3,3]],"A082A",[2288,50.06,15.65,1,3,1,[3,3]],"A083A",[2289,49.7,15.61,1,3,1,[3,3]],"A084A",[2290,48.94,15.7,1,3,1,[3,3]],"A085A",[2291,49.44,16.2,1,3,1,[3,3]],"A086A",[2292,49.85,16.15,1,3,1,[3,3]],"A087A",[2293,49.7,16.89,1,3,1,[3,3]],"A088B",[2294,49.43,17.29,1,3,1,[3,3]],"A089A",[2295,49.15,17.09,1,3,1,[3,3]],"A090A",[2296,49.37,17.83,1,3,1,[3,3]],"A331A",[2297,49.15,18.22,1,3,1,[3,3]],"A333A",[2299,48.72,17.1,1,3,1,[3,3]],"BGG",[2549,50.21,7.34,10,22,1,[0,6]],"BNS",[2550,50.96,7.18,10,22,1,[0,3]],"DREG",[2552,50.66,6.23,10,22,1,[0,3]],"HILG",[2553,50.29,6.68,10,22,1,[0,6]],"HOBG",[2554,50.98,7.33,10,22,1,[0,3]],"KOE",[2555,50.42,7.73,10,22,1,[0,6]],"NAST",[2556,50.2,7.86,10,22,1,[0,6]],"LNDWU",[2557,50.26,12.33,10,23,1,[0,6]],"A807",[2558,52.1,13.42,10,24,1,[3,3]],"AHRW",[2559,50.54,7.08,10,24,1,[0,6]],"BFO",[2561,48.33,8.33,10,24,1,[0,6]],"BRG",[2562,50.87,13.94,10,24,1,[0,3]],"CLL",[2565,51.31,13.0,10,24,1,[0,3]],"FUR",[2568,48.16,11.28,10,24,1,[0,6]],"GRA1",[2573,49.69,11.22,10,24,1,[0,3]],"GRA2",[2574,49.65,11.36,10,24,1,[0,3]],"GRA3",[2575,49.76,11.32,10,24,1,[0,3]],"GRA4",[2576,49.56,11.43,10,24,1,[0,3]],"GRB1",[2577,49.39,11.65,10,24,1,[0,3]],"GRB2",[2578,49.27,11.67,10,24,1,[0,3]],"GRB3",[2579,49.34,11.8,10,24,1,[0,3]],"GRB4",[2580,49.47,11.56,10,24,1,[0,3]],"GRB5",[2581,49.11,11.68,10,24,1,[0,3]],"GRC1",[2582,49.0,11.52,10,24,1,[0,6]],"GRC2",[2583,48.87,11.37,10,24,1,[0,3,3,3]],"GRC3",[2584,48.89,11.58,10,24,1,[0,6]],"GRC4",[2585,49.09,11.52,10,24,1,[0,3]],"KAST",[2594,51.2,8.42,10,24,1,[0,3]],"LNIZ",[2600,53.49,14.21,10,24,1,[0,3]],"MILB",[2603,49.83,9.29,10,24,1,[0,6]],"MOX",[2604,50.65,11.62,10,24,1,[0,3]],"SCHI",[2608,53.34,12.84,10,24,1,[0,3]],"TNS",[2612,50.22,8.45,10,24,1,[4,3,0,3]],"UBBA",[2613,50.82,10.0,10,24,1,[0,3]],"UBR",[2614,47.68,10.11,10,24,1,[0,6]],"WET",[2616,49.14,12.88,10,24,1,[0,3]],"NONN",[2641,54.11,13.69,10,25,1,[0,3]],"PEEM",[2642,54.14,13.77,10,25,1,[0,3]],"BURZL",[2644,51.43,12.82,10,26,1,[0,3]],"FBE",[2645,50.92,13.35,10,26,1,[0,3]],"FROHN",[2646,50.6,12.99,10,26,1,[0,3]],"GUNZ",[2647,50.36,12.33,10,26,1,[0,6]],"LANDS",[2648,51.53,12.16,10,26,1,[0,3]],"LEUT",[2649,50.61,12.52,10,26,1,[4,3]],"MEINS",[2650,50.73,12.88,10,26,1,[0,3]],"MUHB",[2651,51.66,12.34,10,26,1,[0,3]],"MULD",[2652,50.41,12.4,10,26,1,[0,3]],"NEUB",[2653,51.19,11.77,10,26,1,[0,3]],"ROHR",[2654,50.23,12.32,10,26,1,[0,6]],"SCHF",[2655,50.68,12.4,10,26,1,[0,3]],"TANN",[2656,50.41,12.46,10,26,1,[0,3]],"TRIB",[2657,50.35,12.14,10,26,1,[0,6]],"WERD",[2658,50.45,12.31,10,26,1,[0,3]],"WERN",[2659,50.29,12.38,10,26,1,[0,6]],"WIMM",[2660,51.52,11.51,10,26,1,[0,3]],"ABG1",[2661,50.97,12.58,10,27,1,[0,3]],"ANNA",[2662,50.89,12.64,10,27,1,[0,3]],"BBWF",[2663,50.74,10.5,10,27,1,[0,3]],"CRUX",[2666,50.6,10.79,10,27,1,[0,3]],"FRAU",[2667,50.7,12.32,10,27,1,[0,3]],"GEIDO",[2668,50.74,12.2,10,27,1,[0,3]],"GERA",[2669,50.98,12.07,10,27,1,[0,3]],"GRZ1",[2671,50.69,12.22,10,27,1,[0,3]],"HKWD",[2672,50.83,12.27,10,27,1,[0,3]],"HWTS",[2673,50.59,11.47,10,27,1,[0,6]],"KAMM",[2674,51.05,12.43,10,27,1,[0,3]],"LEIB1",[2675,50.58,11.2,10,27,1,[0,3]],"MLFH",[2679,50.79,12.08,10,27,1,[0,3]],"MODW",[2680,50.94,12.47,10,27,1,[4,3]],"MORAS",[2681,50.54,11.22,10,27,1,[0,3]],"PLN",[2685,50.49,12.16,10,27,1,[0,6]],"RANIS",[2688,50.66,11.56,10,27,1,[0,3]],"SPAHL",[2690,50.65,9.91,10,27,1,[0,3]],"TAUT",[2691,50.98,11.71,10,27,1,[0,3]],"THWA",[2692,50.76,10.68,10,27,1,[0,3]],"VITZ",[2693,50.89,10.09,10,27,1,[0,3]],"WARTH",[2694,50.85,10.32,10,27,1,[0,3]],"ZEITZ",[2695,51.05,12.13,10,27,1,[0,3]],"ZEU",[2696,50.67,11.98,10,27,1,[0,6]],"EF02",[3292,50.36,7.25,2,28,1,[5,6]],"EF03",[3293,50.37,7.33,2,28,1,[4,3,5,3]],"CHVC",[3363,50.59,16.05,2,29,1,[0,3]],"CKRC",[3364,48.82,14.31,2,29,1,[0,3]],"DPC",[3365,50.35,16.32,2,29,1,[0,6]],"GOPC",[3366,49.91,14.79,2,29,1,[4,3]],"HSKC",[3367,50.61,13.43,2,29,1,[0,3]],"JAVC",[3368,48.86,17.67,2,29,1,[0,3]],"KHC",[3369,49.13,13.58,2,29,1,[0,3]],"KRLC",[3370,50.1,16.83,2,29,1,[0,3]],"KRUC",[3371,49.06,16.4,2,29,1,[0,3]],"MORC",[3372,49.78,17.54,2,29,1,[0,3]],"NKC",[3373,50.23,12.45,2,29,1,[0,12]],"OKC",[3374,49.83,18.14,2,29,1,[0,3]],"OSTC",[3375,50.56,16.22,2,29,1,[0,3]],"PRA",[3376,50.07,14.43,2,29,1,[4,3]],"PRU",[3377,49.99,14.54,2,29,1,[0,3]],"PVCC",[3378,50.53,14.57,2,29,1,[0,3]],"STAC",[3379,49.03,15.3,2,29,1,[0,3]],"TREC",[3380,49.29,15.49,2,29,1,[0,3]],"UPC",[3381,50.51,16.01,2,29,1,[0,3]],"VRAC",[3382,49.31,16.59,2,29,1,[1,6]],"ZVC",[3384,49.44,14.19,2,29,1,[4,3]],"MORC",[3480,49.78,17.54,2,30,1,[0,3]],"RUE",[3493,52.48,13.78,2,30,1,[0,3]],"STU",[3506,48.77,9.2,2,30,1,[0,6]],"WLF",[3519,49.66,6.15,2,30,1,[0,6]],"WANN",[3521,52.41,13.13,2,31,1,[0,3]],"BEL",[3659,51.84,20.79,2,32,1,[0,3]],"GKP",[3662,53.27,17.24,2,32,1,[0,3]],"KSP",[3664,50.84,16.29,2,32,1,[0,3]],"OJC",[3667,50.22,19.8,2,32,1,[0,3]]],
+			codes:[["OK", "Data saved (download ok, no additional warning)"], ["OK Gaps Overlaps", "Data saved (download ok, data has gaps or overlaps)"], ["OK Partially Saved", "Data saved (download ok, some received data chunks were completely outside the requested time span and discarded)"], ["No Content", "Data saved but empty (download ok, the server did not return any data)"], ["Segment Not Found", "No data saved (download ok, segment data not found, e.g., after a multi-segment request)"], ["Forbidden", "No data saved (download failed: Client error, server response code 403)"]],
+			datacenters:{"1": "https://orfeus-eu.org", "2": "https://geofon.gfz-potsdam.de", "3": "https://eida.ethz.ch", "4": "https://ws.resif.fr", "6": "https://webservices.ingv.it", "7": "https://erde.geophysik.uni-muenchen.de", "10": "https://eida.bgr.de"},
+			downloads:{"1": ["2022-11-08T05:38:56", {"maxdepth": 50, "maxlatitude": 57.0, "maxlongitude": 17.0, "maxmagnitude": null, "mindepth": 1, "minlatitude": 47.0, "minlongitude": 4.0, "minmagnitude": 4.0}]},
+			networks:["9S", "C4", "CH", "Z3", "1N", "8C", "FO", "FR", "MT", "RA", "RD", "BW", "ZJ", "GU", "IV", "MN", "OX", "SI", "ST", "ZO", "BE", "OE", "BQ", "GQ", "GR", "KQ", "SX", "TH", "2D", "CZ", "GE", "GX", "PL"],
+			selcodes:new Set([0]),
+			seldownloads:new Set([1]),
+			seldatacenters: new Set([1, 2, 3, 4, 6, 7, 10])
+		};
+	</script>
+
+
+    
+	
+		<!-- Leaflet -->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+	
+	
+
+    <style>
+    	html, body, div.main{
+	height:100%;
+}
+html, body{
+	margin: 0;
+	padding: 0;
+}
+*{
+	box-sizing: border-box; /* this is the default if using bootstrap. Otherwise, better having it */
+}
+/* flex layout stuff*/
+.flex-direction-row{
+	display: flex;
+	flex-direction: row;
+}
+.flex-direction-col{
+	display: flex;
+	flex-direction: column;
+}
+.flex-direction-row > .flexible, .flex-direction-col > .flexible{
+	flex: 1 1 auto;
+}
+/* override bootstrap */
+label {
+    font-weight: normal !important;
+}
+
+.disabled{
+	color: #ccc;
+	cursor: not-allowed;
+}
+		#options{
+	max-width: 30vw;
+	max-height: 80vh;
+	overflow:scroll;
+}
+.underline{
+	border-bottom: 1px solid #ddd;
+}
+.leaflet-popup .title{
+	font-size: larger;
+	padding-bottom:5px;
+	font-weight:bold;
+}
+.leaflet-popup .subtitle{
+	padding-bottom:10px;
+	font-weight:bold;
+}
+div.info-legend{
+	margin: 5px 0px;
+	padding: 10px;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.2);
+	background-color: white;
+	border-radius: 5px;
+}
+#legend .colorbar{
+	background: linear-gradient(to right, rgba(255, 190, 190, 1) , red);
+	height: 1em;
+	width: 4em;
+	display: inline-block;
+	border: 1px solid #666;
+	vertical-align: middle;
+}
+td.nowrap, th.nowrap{
+	white-space: nowrap;
+}
+td.right, th.right{
+	text-align: right;
+}
+td{
+	vertical-align:top;
+	padding-top:5px;
+}
+td:not(:first-child), th:not(:first-child){
+	padding-left:5px;
+}
+th{
+	text-align:left;
+}
+#loadingDiv{
+	width:25vw;
+	display:none;
+	z-index:1000;
+	position:fixed;
+	bottom:1.5em;
+	right:2em;
+	text-shadow:2px 2px #ccc;
+    color: #ee0000;
+    text-align:right;
+    font-size:150%;
+}
+	</style>
+
+</head>
+
+
+<body onload="updateMap()">
+
+	
+	
+	<div class="main flex-direction-col">
+		<div class='flexible' id="map"></div>
+		
+		<!--  ALL DIVS BELOW WILL BE REMOVED AND ADDED TO LEAFLET CONTROLS.
+		Cumbersome, but we want to keep view code in the view (and exploit jinja2 rendering) -->
+		
+		<!--  1. LEGEND: -->
+		<div id='legend'>
+			<table>
+				<tr>
+					<td class='right'>
+						<svg class='svg-tirangle' xmlns='http://www.w3.org/2000/svg' version='1.1' width='10' height='8.65'>
+							<polygon points='0,8.65 5,0 10,8.65' style='fill:rgb(255, 255, 255);stroke:#333;stroke-width:1' />
+						</svg>
+					</td>
+					<td>Triangles: stations with downloaded waveform data segments</td>
+				</tr>
+		    		<tr>
+		    			<td class='right nowrap'>
+		    				<span id='minval'>0%</span>
+		    				<span class='colorbar'></span>
+		    				<span id='maxval'>100%</span>
+		    			</td>
+		    			<td>Colors: % of segments in selected categories (see 'Options')</td>
+		    		</tr>
+		    		<tr>
+		    			<td class='right nowrap'>
+		    				<svg class='svg-tirangle' xmlns='http://www.w3.org/2000/svg' version='1.1' width='8' height='6.92'>
+								<polygon points='0,6.92 4,0 8,6.92' style='fill:rgb(255, 255, 255);stroke:#333;stroke-width:1' />
+							</svg>
+		    				<svg class='svg-tirangle' xmlns='http://www.w3.org/2000/svg' version='1.1' width='10' height='8.65'>
+								<polygon points='0,8.65 5,0 10,8.65' style='fill:rgb(255, 255, 255);stroke:#333;stroke-width:1' />
+							</svg>
+							<svg class='svg-tirangle' xmlns='http://www.w3.org/2000/svg' version='1.1' width='12' height='10.38'>
+								<polygon points='0,10.38 6,0 12,10.38' style='fill:rgb(255, 255, 255);stroke:#333;stroke-width:1' />
+							</svg>
+		    			</td>
+		    			<td>Sizes: total number of segments</td>
+		    		</tr>
+		    </table>
+		</div>
+		
+		<!-- this div will be removed and added as control to the map.
+		Cumbersome, but we want to exploit jinja2 rendering -->
+		<div id='options'>
+
+			<h3 class='underline'>Selected categories</h3>
+			<table>
+				<tr><th>Category</th><th>Description</th></tr>
+				
+				<tr>
+					<td class='nowrap'>
+						<label><input type='checkbox' checked
+							onclick='if(this.checked){ GLOBALS.selcodes.add(0); }else{ GLOBALS.selcodes.delete(0); }; updateMap()' />
+						OK</label>
+					</td>
+					<td>Data saved (download ok, no additional warning)</td>
+				</tr>
+				
+				<tr>
+					<td class='nowrap'>
+						<label><input type='checkbox' 
+							onclick='if(this.checked){ GLOBALS.selcodes.add(1); }else{ GLOBALS.selcodes.delete(1); }; updateMap()' />
+						OK Gaps Overlaps</label>
+					</td>
+					<td>Data saved (download ok, data has gaps or overlaps)</td>
+				</tr>
+				
+				<tr>
+					<td class='nowrap'>
+						<label><input type='checkbox' 
+							onclick='if(this.checked){ GLOBALS.selcodes.add(2); }else{ GLOBALS.selcodes.delete(2); }; updateMap()' />
+						OK Partially Saved</label>
+					</td>
+					<td>Data saved (download ok, some received data chunks were completely outside the requested time span and discarded)</td>
+				</tr>
+				
+				<tr>
+					<td class='nowrap'>
+						<label><input type='checkbox' 
+							onclick='if(this.checked){ GLOBALS.selcodes.add(3); }else{ GLOBALS.selcodes.delete(3); }; updateMap()' />
+						No Content</label>
+					</td>
+					<td>Data saved but empty (download ok, the server did not return any data)</td>
+				</tr>
+				
+				<tr>
+					<td class='nowrap'>
+						<label><input type='checkbox' 
+							onclick='if(this.checked){ GLOBALS.selcodes.add(4); }else{ GLOBALS.selcodes.delete(4); }; updateMap()' />
+						Segment Not Found</label>
+					</td>
+					<td>No data saved (download ok, segment data not found, e.g., after a multi-segment request)</td>
+				</tr>
+				
+				<tr>
+					<td class='nowrap'>
+						<label><input type='checkbox' 
+							onclick='if(this.checked){ GLOBALS.selcodes.add(5); }else{ GLOBALS.selcodes.delete(5); }; updateMap()' />
+						Forbidden</label>
+					</td>
+					<td>No data saved (download failed: Client error, server response code 403)</td>
+				</tr>
+				
+				</table>
+
+			<h3 class='underline'>Data-centers</h3>
+			<table>
+				<tr><th>Domain url</th><th class='right'>Total segments</th><th class='right'>Selected categories segments</th><th class='right'></th></tr>
+				
+				<tr>
+					<td class='nowrap'>
+						<label><input type='checkbox' checked
+							onclick='if(this.checked){ GLOBALS.seldatacenters.add(1); }else{ GLOBALS.seldatacenters.delete(1); }; updateMap()' />
+						https://orfeus-eu.org</label>
+					</td>
+					<td id="dc1total" class='right'></td>
+					<td id="dc1sel" class='right'></td>
+					<td id="dc1selperc" class='right'></td>
+				</tr>
+				
+				<tr>
+					<td class='nowrap'>
+						<label><input type='checkbox' checked
+							onclick='if(this.checked){ GLOBALS.seldatacenters.add(2); }else{ GLOBALS.seldatacenters.delete(2); }; updateMap()' />
+						https://geofon.gfz-potsdam.de</label>
+					</td>
+					<td id="dc2total" class='right'></td>
+					<td id="dc2sel" class='right'></td>
+					<td id="dc2selperc" class='right'></td>
+				</tr>
+				
+				<tr>
+					<td class='nowrap'>
+						<label><input type='checkbox' checked
+							onclick='if(this.checked){ GLOBALS.seldatacenters.add(3); }else{ GLOBALS.seldatacenters.delete(3); }; updateMap()' />
+						https://eida.ethz.ch</label>
+					</td>
+					<td id="dc3total" class='right'></td>
+					<td id="dc3sel" class='right'></td>
+					<td id="dc3selperc" class='right'></td>
+				</tr>
+				
+				<tr>
+					<td class='nowrap'>
+						<label><input type='checkbox' checked
+							onclick='if(this.checked){ GLOBALS.seldatacenters.add(4); }else{ GLOBALS.seldatacenters.delete(4); }; updateMap()' />
+						https://ws.resif.fr</label>
+					</td>
+					<td id="dc4total" class='right'></td>
+					<td id="dc4sel" class='right'></td>
+					<td id="dc4selperc" class='right'></td>
+				</tr>
+				
+				<tr>
+					<td class='nowrap'>
+						<label><input type='checkbox' checked
+							onclick='if(this.checked){ GLOBALS.seldatacenters.add(6); }else{ GLOBALS.seldatacenters.delete(6); }; updateMap()' />
+						https://webservices.ingv.it</label>
+					</td>
+					<td id="dc6total" class='right'></td>
+					<td id="dc6sel" class='right'></td>
+					<td id="dc6selperc" class='right'></td>
+				</tr>
+				
+				<tr>
+					<td class='nowrap'>
+						<label><input type='checkbox' checked
+							onclick='if(this.checked){ GLOBALS.seldatacenters.add(7); }else{ GLOBALS.seldatacenters.delete(7); }; updateMap()' />
+						https://erde.geophysik.uni-muenchen.de</label>
+					</td>
+					<td id="dc7total" class='right'></td>
+					<td id="dc7sel" class='right'></td>
+					<td id="dc7selperc" class='right'></td>
+				</tr>
+				
+				<tr>
+					<td class='nowrap'>
+						<label><input type='checkbox' checked
+							onclick='if(this.checked){ GLOBALS.seldatacenters.add(10); }else{ GLOBALS.seldatacenters.delete(10); }; updateMap()' />
+						https://eida.bgr.de</label>
+					</td>
+					<td id="dc10total" class='right'></td>
+					<td id="dc10sel" class='right'></td>
+					<td id="dc10selperc" class='right'></td>
+				</tr>
+				
+			</table>
+
+			<h3 class='underline'>Downloads</h3>
+			<table>
+				<tr><th>Id</th><th>Executed</th><th>Event query parameters</th></tr>
+				
+				<tr>
+					<td class='nowrap'>
+						<label><input type='checkbox' checked
+							onclick='if(this.checked){ GLOBALS.seldownloads.add(1); }else{ GLOBALS.seldownloads.delete(1); }; updateMap()' />
+						1</label>
+				</td>
+				<td class='nowrap'>2022-11-08T05:38:56</td>
+				<td>{"maxdepth": 50, "maxlatitude": 57.0, "maxlongitude": 17.0, "maxmagnitude": null, "mindepth": 1, "minlatitude": 47.0, "minlongitude": 4.0, "minmagnitude": 4.0}</td>
+				</tr>
+				
+			</table>
+		</div>
+	</div>
+	
+	<div id='loadingDiv'>
+		UPDATING MAP ...
+	</div>
+
+</body>
+
+
+<script type='text/javascript'>function createLegend(map){
+	var legend = L.control({position: 'bottomleft'});
+	legend.onAdd = function (map) {
+		var div = L.DomUtil.create('div', 'info-legend');
+	    var child = document.getElementById('legend');
+	    child.parentNode.removeChild(child);
+	    div.appendChild(child);
+	    return div;
+	};
+	legend.addTo(map);
+}
+
+// create the options menu. This is in a function so that it can be called 
+// after the page has rendered AND SHOULD BE CALLED ONLY ONCE
+function createOptionsMenu(map){
+	var options = L.control({position: 'topright'});
+	options.onAdd = function (map) {
+	    var div = L.DomUtil.create('div', 'info-legend options');
+	    var child = document.getElementById('options');
+	    child.parentNode.removeChild(child);
+	    div.appendChild(child);
+	    // disable clicks and mouse wheel, so enable scrolling on the div:
+	    // https://github.com/dalbrx/Leaflet.ResizableControl/blob/master/src/Leaflet.ResizableControl.js#L98
+	    L.DomEvent.disableClickPropagation(child);  // for safety (is it needed?) 
+        L.DomEvent.on(child, 'mousewheel', L.DomEvent.stopPropagation);
+        
+        // add mouse out over effect (hide/ set visible like layers control)
+        var icon = L.DomUtil.create('div', 'options_icon');
+        icon.innerHTML = 'Options';
+        div.appendChild(icon);
+        var isOptionsDivVisible = true;
+        function setVisible(e, visible){
+        		if (visible != isOptionsDivVisible){
+        			child.style.display = visible ? 'block' : 'none';
+        			icon.style.display = visible ? 'none' : 'inline-block';
+        			isOptionsDivVisible = visible;
+	        		if (e){
+	        			L.DomEvent.stopPropagation(e);
+	        		}
+        		}
+        };
+        var showFunc = function(e){setVisible(e, true)};
+        var hideFunc = function(e){setVisible(e, false)};
+
+        // To use the options button as the leaflet control layer (using click event is more complex,
+        // as we should keep the icon div above visible, change its name to 'hide', and place it on the div):
+        L.DomEvent.on(div, 'mouseover', showFunc);
+        L.DomEvent.on(div, 'mouseout', hideFunc);
+		
+        // Set the default options div visibility:
+        setVisible(null, false);
+	    return div;
+	    //return child;
+	};
+	options.addTo(map);
+	
+}
+
+function createMap(){
+	// creates the leaflet map, setting its initial bounds. Call map.getBounds() to return them
+	GLOBALS.map = map = new L.Map('map');
+	// initialize the map if not already init'ed
+	L.esri.basemapLayer("Topographic").addTo(map);
+	// L.esri.basemapLayer("OceansLabels").addTo(map);
+	createLegend(map);
+	createOptionsMenu(map);
+	// create bounds and fit now, otherwise the map mathods latlng will not work:
+	var [minLat, minLon] = [1000, 1000];
+	var [maxLat, maxLon] =[0, 0];
+	var sta_data = GLOBALS.sta_data;
+	var stations = [];
+	for (var ii = 0; ii < sta_data.length; ii+=2){
+		var staName = sta_data[ii];
+		var staData = sta_data[ii+1];
+		var lat = staData[1];
+		var lon = staData[2];
+		if (lat < minLat){
+			minLat = lat;
+		}
+		if (lat > maxLat){
+			maxLat = lat;
+		}
+		if (lon < minLon){
+			minLon = lon;
+		}
+		if (lon > maxLon){
+			maxLon = lon;
+		}
+		stations.push([staName, staData, L.latLng(lat, lon)]);
+	}
+	GLOBALS.sta_data = stations;
+	if (minLat == maxLat){
+		minLat -= 0.1;
+		maxLat += 0.1;
+	}
+	if(minLon == maxLon){
+		minLon -= 0.1;
+		maxLon += 0.1;
+	}
+	var corner1 = L.latLng(minLat, minLon),
+	corner2 = L.latLng(maxLat, maxLon),
+	__bounds = L.latLngBounds(corner1, corner2);
+	map.fitBounds(__bounds);
+	// init listeners (just once):
+	map.on("zoomend", function (e) {
+		// console.log("ZOOMEND", e);
+		updateMap();
+	});
+	// moveend has a problem: it might be moved when showing a popup
+	// in this case the map is updated and the popup venishes...
+//	map.on("moveend", function (e) {
+//		// console.log("ZOOMEND", e);
+//		updateMap();
+//	});
+	return map;
+}
+
+function updateMap(){
+	// updates the map in a timeout in case of poor perfs
+	var loader = document.getElementById("loadingDiv");
+	loader.style.display = "block";
+	setTimeout(function(){ _updateMap(); loader.style.display = "none";}, 25);
+}
+
+function _updateMap(){
+	/**
+	 * Updates the map with the given data and the given selected labels
+	 * This function is called on zoom to resize the markers, as they are of type Leaflet.ploygon,
+	 * which are much more lightweight than svgicons but with sizes relative to the map coordinates,
+	 * thus zoom dependent, whereas we want them zoom independent
+	 */
+	var {datacenters, seldatacenters, networks, codes, selcodes, downloads, seldownloads} = GLOBALS;
+
+	var map = GLOBALS.map;
+	if(!map){
+		map = createMap();
+	}else{
+		map.removeLayer(GLOBALS.mapLayer);
+	}
+	// sta_sta might have been modified if map has to be initialized, set it here:
+	sta_data = GLOBALS.sta_data;
+	var mapBounds = map.getBounds();  // not used, left here to avoid re-googling it in case ...
+	// alias for document.getElementById:
+	var htmlElement = document.getElementById.bind(document);  // https://stackoverflow.com/questions/1007340/javascript-function-aliasing-doesnt-seem-to-work
+
+	var dcStats = {}; //stores datacenter id mapped to markers, selected and total segments
+	var minVal = 1.0;
+	var maxVal = 0.0;
+	// Although we do not use svg icons anymore (which have poor perfs) we should not
+	// need visibleMarkers to display only visible markers, probably the Object below
+	// was kept anyway to make map lighter:
+	var visibleMarkers = {};
+	var outb =0;
+	var below = 0;
+	var stazz = 0;
+	// now calculate datacenters stats, ok, malformed for each station, and which station markers should be displayed: 
+	for (var i = 0; i < sta_data.length; i++){
+		var [staName, staData, latLng] = sta_data[i];
+		var [ok, malformed, total] = processStation(staName, staData, selcodes, seldownloads, seldatacenters);
+		if (!total){
+			continue;
+		}
+		var [staId, lat, lon, dcId, netIndex] = staData;		
+		// get datacenter id and update dc stats:
+		if (!(dcId in dcStats)){
+			dcStats[dcId] = {'total':0, 'ok':0};
+		}
+		var dcStat = dcStats[dcId];
+		dcStat.total += total;
+		dcStat.ok += ok;
+		// if exactly centered on another marker (according to the current map resolution, in pixels)
+		// show only the one with higher value (=% of segments in selected catagories):
+		var key = map.latLngToLayerPoint(latLng);
+		key = [key.x, key.y].toString();  // in any case js objects convert keys to string
+		var insert = !(key in visibleMarkers);
+		if (!insert){
+			var [mySize, myVal] = getSizeAndValue(ok, malformed, total);
+			var [staName_, netName_, staId_, latLng_, dcId_, datacenter_, ok_, malformed_, total_] = visibleMarkers[key];
+			var [otherSize, otherVal] = getSizeAndValue(ok_, malformed_, total_);
+			if(myVal > otherVal){
+				insert = true;
+			}
+		}
+		if(insert){
+			var netName = networks[netIndex];
+			visibleMarkers[key] = [staName, netName, staId, latLng, dcId, datacenters[dcId], ok, malformed, total];
+			stazz += 1;
+		}else{
+			below +=1;
+		}
+	}
+	
+	console.log(`inserted ${stazz}, outofbounds ${outb}, overlapping-hidden ${below}`);
+	
+	// now display the markers:
+	var allMarkers = [];
+	for (key in visibleMarkers){
+		var [staName, netName, staId, latLng, dcId, datacenter, ok, malformed, total] = visibleMarkers[key];
+		marker =  createMarker(staName, netName, staId, latLng, dcId, datacenter, ok, malformed, total, map);
+		allMarkers.push(marker);
+	}
+	// now sort them:
+	allMarkers.sort(function(m1, m2){return m1.options.zIndexOffset - m2.options.zIndexOffset;});
+	
+	// print stats for datacenters:
+	for (var dcId in datacenters){
+		var {ok, total} = (dcId in dcStats) ? dcStats[dcId] : {'ok': 0, 'total': 0};
+		//update stats in the dropdown menu Options:
+		htmlElement(`dc${dcId}total`).innerHTML = total;
+		htmlElement(`dc${dcId}sel`).innerHTML = ok;
+		htmlElement(`dc${dcId}selperc`).innerHTML = `${total ? Math.round((100*ok)/total) : 0}%`;
+	}
+	// set the mapLayer so that we will know what to clear the next time we call this method:
+	GLOBALS.mapLayer = new L.featureGroup(allMarkers).addTo(map);
+}
+
+function processStation(staName, staData, selectedCodes, selectedDownloads, selectedDatacenters){
+	// returns the array [ok, malformed, total] for a given station
+	var ok = 0;
+	var malformed = 0;
+	dcId = staData[3];
+	var skipMarker = [0, 0, 0];
+	if (!selectedDatacenters.has(dcId)){
+		return skipMarker;
+	}
+	// compute malformed and ok:
+	var skipStation = true;
+	var STARTDATAINDEX = 5;
+	for (var i = STARTDATAINDEX; i < staData.length; i+=2){
+		var downloadId = staData[i];
+		var downloadData = staData[i+1];
+		if (!selectedDownloads.has(downloadId)){
+			continue;
+		}
+		skipStation = false;
+		for (var j = 0; j < downloadData.length; j+=2){
+			var codeIndex = downloadData[j];
+			var numSegments = downloadData[j+1];
+			if (selectedCodes.has(codeIndex)){
+				ok += numSegments;
+			}else{
+				malformed += numSegments;
+			}
+		}
+	}
+	if (skipStation){
+		return skipMarker;
+	}
+	return [ok, malformed, ok+malformed];
+}
+
+function createMarker(staName, netName, staId, latLng, dcId, datacenter, ok, malformed, total, map){
+	// creates the marker for a given set of stations attributes
+	// Uses  L.Ploygon because it's MUCH, much more lightweight than L.marker with custom svg icon
+	// The drawback is that we need to resize the marker on zoom
+	// for info in svg marker icon, see // copied and modified from https://groups.google.com/forum/#!topic/leaflet-js/GSisdUm5rEc
+	var [size, val] = getSizeAndValue(ok, malformed, total);
+	var greenBlue = 255 - val;
+
+	var h = size*1.7320508/2;  // height of a triangular equilateral
+	var x = size/2.0;
+	var y = 2*h/3.0;
+
+	var pt = map.latLngToLayerPoint(latLng);
+	var latlng2 = map.layerPointToLatLng(new L.Point(pt.x+x, pt.y-y));
+	
+	var lon = latLng.lng;
+	var lat = latLng.lat;
+	var xx = Math.abs(latlng2.lng - lon);
+	var yy = Math.abs(latlng2.lat - lat);
+	
+    // zIndexOffset is an OFFSET. If made in thousands it basically works as a zIndex
+	// (see last post here: https://github.com/Leaflet/Leaflet/issues/5560)
+	// it is used only if Markers are supplied. If Polygon (as in this case) they will be used
+	// for ordering the markers
+    var zIndexOffset = (val > 0 ? 10000 : 0) + 100 * size;
+    var latlngs = [[lat-yy/2, lon-xx],[lat+yy, lon], [lat-yy/2, lon+xx]];
+    var tri = L.polygon(latlngs, {fillOpacity: 1, color: '#333', fillColor:`rgb(255, ${greenBlue}, ${greenBlue})`,
+    	weight:1, zIndexOffset: zIndexOffset});
+	
+	//bind popup with infos:
+	var staPopupContent = `<div class='title'> ${staName}.${netName} </div>
+						   <div class='subtitle underline'>${datacenter}</div>
+						   <table class='station-info'>
+						   <tr><td>database id:</td><td class='right'>${staId}</td></tr>
+						   <tr><td>Segments:</td><td class='right'> ${total} </td></tr>
+						   <tr><td class='right'>In selected categories:</td><td class='right'> ${ok} </td></tr>
+						   <tr><td class='right'>Not in selected categories:</td><td class='right'> ${malformed} </td></tr>
+						   </table>`; 
+	tri.bindPopup(staPopupContent);
+
+	return tri;
+}
+
+function getSizeAndValue(ok, malformed, total){
+	//returns the array [size, total], where size is an int in [7,15] and total an int in [55, 255]
+	// the former is the size of the markers, the latter the color to be substracted to green and blue components.
+	// It is from 55 in order to leave white markers with no stations in selected categories, and
+	// make pink to red the other cases, so that hopefully they are visually recognizable.
+	var val = ok/total;
+	var retVal = 0;
+	if (val > 0){
+		retVal = parseInt(0.5+200*val) + 55;
+	}
+	// set sizes kind-of logaritmically:
+	var minRadius = 7;  // lower than this the circle is not clickable ...
+	var sizeRadius = 10; // for the biggest case (>= than 1000 segments)
+	if (total < 10){
+		sizeRadius = 0;
+	}else if (total < 50){
+		sizeRadius = 2;
+	}else if (total < 100){
+		sizeRadius = 4;
+	}else if (total < 500){
+		sizeRadius = 6;
+	}else if (total < 1000){
+		sizeRadius = 8;
+	}
+	return [minRadius+sizeRadius, retVal];
+}</script>
+
+
+</html>
